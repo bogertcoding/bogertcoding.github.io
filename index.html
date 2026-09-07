@@ -1,1 +1,495 @@
-<h1>Joshua's Programming Portfolio</h1>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Joshua Chauhan — CS Student Portfolio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Lora:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --paper: #F7F4EC;
+    --paper-line: #E3DCC8;
+    --ink: #1D2430;
+    --ink-soft: #565C66;
+    --pen-blue: #2F5C8A;
+    --amber: #C97A2B;
+    --card-bg: #FFFEFA;
+    --max-w: 720px;
+  }
+
+  *{ box-sizing: border-box; }
+
+  html{ scroll-behavior: smooth; }
+
+  body{
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Inter', sans-serif;
+    font-size: 17px;
+    line-height: 1.6;
+    -webkit-font-smoothing: antialiased;
+  }
+
+  h1, h2, h3{
+    font-family: 'Lora', serif;
+    font-weight: 600;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  code, .mono{
+    font-family: 'IBM Plex Mono', monospace;
+  }
+
+  a{ color: var(--pen-blue); }
+
+  ::selection{ background: #D8E6F2; }
+
+  @media (prefers-reduced-motion: reduce){
+    *{ animation: none !important; transition: none !important; }
+  }
+
+  a:focus-visible, button:focus-visible, summary:focus-visible{
+    outline: 2px solid var(--pen-blue);
+    outline-offset: 3px;
+  }
+
+  .wrap{
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  /* ---------- HERO ---------- */
+  .hero{
+    position: relative;
+    padding: 96px 0 72px;
+    background-image: repeating-linear-gradient(
+      to bottom,
+      transparent,
+      transparent 31px,
+      var(--paper-line) 32px
+    );
+  }
+
+  .hero-inner{
+    max-width: var(--max-w);
+    margin: 0 auto;
+    padding: 0 24px;
+  }
+
+  .terminal{
+    background: var(--ink);
+    color: #E7F0E3;
+    border-radius: 6px;
+    padding: 18px 20px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 14px;
+    max-width: 460px;
+    margin-bottom: 36px;
+    box-shadow: 0 6px 0 rgba(0,0,0,0.08);
+  }
+
+  .terminal .prompt{ color: #8FD19E; }
+  .terminal .cursor{
+    display: inline-block;
+    width: 8px;
+    height: 15px;
+    background: #E7F0E3;
+    vertical-align: -2px;
+    animation: blink 1s steps(1) infinite;
+  }
+
+  @keyframes blink{
+    50%{ opacity: 0; }
+  }
+
+  .hero h1{
+    font-size: clamp(2rem, 5vw, 2.7rem);
+    line-height: 1.2;
+    max-width: 12ch;
+  }
+
+  .hero .role{
+    margin-top: 14px;
+    color: var(--ink-soft);
+    font-size: 1.05rem;
+    max-width: 46ch;
+  }
+
+  .hero .role .hl{
+    color: var(--pen-blue);
+  }
+
+  /* ---------- SECTION SHELL ---------- */
+  section{
+    padding: 56px 0;
+    border-top: 1px solid var(--paper-line);
+  }
+
+  .section-head{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .section-head .idx{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 13px;
+    color: var(--amber);
+  }
+
+  .section-head h2{
+    font-size: 1.5rem;
+  }
+
+  /* ---------- ABOUT ---------- */
+  .about p{ margin: 0 0 14px; max-width: 62ch; }
+
+  .margin-note{
+    border-left: 2px solid var(--amber);
+    padding-left: 14px;
+    margin: 20px 0 0;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    max-width: 52ch;
+  }
+
+  /* ---------- TRANSCRIPT ---------- */
+  .transcript{
+    width: 100%;
+    border-collapse: collapse;
+    font-size: 0.92rem;
+  }
+
+  .transcript th{
+    text-align: left;
+    font-family: 'IBM Plex Mono', monospace;
+    font-weight: 400;
+    font-size: 0.78rem;
+    color: var(--ink-soft);
+    padding: 0 10px 10px 0;
+    border-bottom: 1px solid var(--paper-line);
+  }
+
+  .transcript td{
+    padding: 11px 10px 11px 0;
+    border-bottom: 1px solid var(--paper-line);
+    vertical-align: top;
+  }
+
+  .transcript .code{
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--pen-blue);
+    white-space: nowrap;
+  }
+
+  .transcript .grade{
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--ink-soft);
+  }
+
+  /* ---------- PROJECTS ---------- */
+  .filelist{
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+
+  .file{
+    background: var(--card-bg);
+    border: 1px solid var(--paper-line);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+
+  .file summary{
+    list-style: none;
+    cursor: pointer;
+    padding: 16px 18px;
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    justify-content: space-between;
+  }
+
+  .file summary::-webkit-details-marker{ display: none; }
+
+  .file .fname{
+    display: flex;
+    align-items: baseline;
+    gap: 10px;
+    min-width: 0;
+  }
+
+  .file .fname .name{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.95rem;
+    color: var(--ink);
+  }
+
+  .file .fname .ext{
+    color: var(--ink-soft);
+    font-size: 0.8rem;
+  }
+
+  .file .toggle{
+    font-family: 'IBM Plex Mono', monospace;
+    color: var(--ink-soft);
+    font-size: 0.85rem;
+    flex-shrink: 0;
+    transition: transform 0.15s ease;
+  }
+
+  .file[open] .toggle{ transform: rotate(90deg); }
+
+  .file .body{
+    padding: 0 18px 18px;
+    border-top: 1px solid var(--paper-line);
+  }
+
+  .file .body p{
+    margin: 14px 0 12px;
+    color: var(--ink-soft);
+    font-size: 0.95rem;
+    max-width: 56ch;
+  }
+
+  .tags{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+    margin-bottom: 12px;
+  }
+
+  .tag{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.72rem;
+    background: #EFEADA;
+    color: var(--ink-soft);
+    padding: 3px 8px;
+    border-radius: 3px;
+  }
+
+  .file .body a{
+    font-size: 0.9rem;
+    text-decoration: none;
+    border-bottom: 1px solid currentColor;
+  }
+
+  /* ---------- SKILLS ---------- */
+  .skills-block{
+    background: var(--ink);
+    color: #E7F0E3;
+    border-radius: 6px;
+    padding: 22px 24px;
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.88rem;
+    line-height: 1.9;
+    overflow-x: auto;
+  }
+
+  .skills-block .cmd{ color: #8FD19E; }
+  .skills-block .k{ color: #E4B15A; }
+
+  /* ---------- CONTACT / FOOTER ---------- */
+  footer{
+    padding: 56px 0 80px;
+    border-top: 1px solid var(--paper-line);
+  }
+
+  .compile{
+    font-family: 'IBM Plex Mono', monospace;
+    font-size: 0.95rem;
+    color: var(--ink-soft);
+    margin-bottom: 18px;
+  }
+
+  .contact-links{
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    font-size: 0.95rem;
+  }
+
+  .contact-links a{
+    text-decoration: none;
+    border-bottom: 1px solid var(--paper-line);
+    padding-bottom: 2px;
+  }
+
+  .contact-links a:hover{
+    border-bottom-color: var(--pen-blue);
+  }
+
+  @media (max-width: 480px){
+    .hero{ padding: 64px 0 48px; }
+    section{ padding: 44px 0; }
+    .terminal{ font-size: 12.5px; }
+  }
+</style>
+</head>
+<body>
+
+  <div class="hero">
+    <div class="hero-inner">
+      <div class="terminal">
+        <span class="prompt">&gt;&gt;&gt;</span> <span id="typed"></span><span class="cursor"></span>
+      </div>
+      <h1>Joshua Chauhan</h1>
+      <p class="role">First-year Computer Science student at <span class="hl">Purdue University</span>, still deciding whether I like recursion more than iteration. Learning by building small, sometimes-broken things.</p>
+    </div>
+  </div>
+
+  <div class="wrap">
+
+    <section class="about" id="about">
+      <div class="section-head">
+        <span class="idx">01</span>
+        <h2>About</h2>
+      </div>
+      <p>I started programming eight months ago in an intro Python course and haven't really stopped. Most of what's below is coursework and weekend projects — nothing production-grade yet, but each one taught me something I didn't know going in.</p>
+      <p>Outside of class I'm slowly working through a data structures textbook ahead of schedule, and I help run my school's beginner coding club on Thursdays.</p>
+      <div class="margin-note">Note to self: rewrite this page once I've actually shipped something with a database in it.</div>
+    </section>
+
+    <section id="coursework">
+      <div class="section-head">
+        <span class="idx">02</span>
+        <h2>Coursework</h2>
+      </div>
+      <table class="transcript">
+        <thead>
+          <tr>
+            <th>Code</th>
+            <th>Course</th>
+            <th>Term</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td class="code">CS 111</td>
+            <td>Intro to Computer Science (Python)</td>
+            <td>Fall</td>
+            <td class="grade">Completed</td>
+          </tr>
+          <tr>
+            <td class="code">CS 112</td>
+            <td>Data Structures (Java)</td>
+            <td>Spring</td>
+            <td class="grade">In progress</td>
+          </tr>
+          <tr>
+            <td class="code">MATH 151</td>
+            <td>Calculus I</td>
+            <td>Fall</td>
+            <td class="grade">Completed</td>
+          </tr>
+          <tr>
+            <td class="code">CS 205</td>
+            <td>Discrete Structures</td>
+            <td>Spring</td>
+            <td class="grade">In progress</td>
+          </tr>
+        </tbody>
+      </table>
+    </section>
+
+    <section id="projects">
+      <div class="section-head">
+        <span class="idx">03</span>
+        <h2>Projects</h2>
+      </div>
+      <div class="filelist">
+
+        <details class="file" open>
+          <summary>
+            <span class="fname"><span class="name">habit_tracker</span><span class="ext">.py</span></span>
+            <span class="toggle">▸</span>
+          </summary>
+          <div class="body">
+            <div class="tags"><span class="tag">python</span><span class="tag">sqlite3</span><span class="tag">CLI</span></div>
+            <p>A command-line habit tracker I built for my own use after getting tired of paper checklists. Stores entries in a local SQLite database and prints a small streak counter each time you log a habit.</p>
+            <a href="#">View on GitHub</a>
+          </div>
+        </details>
+
+        <details class="file">
+          <summary>
+            <span class="fname"><span class="name">maze_solver</span><span class="ext">.java</span></span>
+            <span class="toggle">▸</span>
+          </summary>
+          <div class="body">
+            <div class="tags"><span class="tag">java</span><span class="tag">BFS</span><span class="tag">Swing</span></div>
+            <p>Final project for CS 111: generates a random maze and solves it with breadth-first search, with a small Swing window that animates the path being found. First time I really understood why queues matter.</p>
+            <a href="#">View on GitHub</a>
+          </div>
+        </details>
+
+        <details class="file">
+          <summary>
+            <span class="fname"><span class="name">campus-events</span><span class="ext">.html</span></span>
+            <span class="toggle">▸</span>
+          </summary>
+          <div class="body">
+            <div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">vanilla JS</span></div>
+            <p>A static page listing coding-club meetups, built to actually learn the fundamentals of the web before touching a framework. Filters events by date using plain JavaScript, no libraries.</p>
+            <a href="#">View on GitHub</a>
+          </div>
+        </details>
+
+      </div>
+    </section>
+
+    <section id="skills">
+      <div class="section-head">
+        <span class="idx">04</span>
+        <h2>Skills</h2>
+      </div>
+      <div class="skills-block">
+<span class="cmd">$</span> cat skills.txt<br>
+<span class="k">languages</span>: Python, Java, HTML/CSS, JavaScript (basics)<br>
+<span class="k">tools</span>: Git, VS Code, SQLite, Linux terminal<br>
+<span class="k">learning_now</span>: data structures, discrete math, algorithm analysis<br>
+<span class="k">comfortable_with</span>: loops, recursion, OOP basics, debugging by printing everything
+      </div>
+    </section>
+
+  </div>
+
+  <footer>
+    <div class="wrap">
+      <div class="compile">$ contact --student joshua_chauhan --status "open to internships"</div>
+      <div class="contact-links">
+        <a href="mailto:joshua.chauhan@example.edu">joshua.chauhan@example.edu</a>
+        <a href="#">github.com/joshuachauhan</a>
+        <a href="#">linkedin.com/in/joshuachauhan</a>
+      </div>
+    </div>
+  </footer>
+
+<script>
+  // Single orchestrated motion: type out the terminal intro line once on load.
+  (function(){
+    var el = document.getElementById('typed');
+    var text = 'print("Hi, I\\'m a first-year CS student.")';
+    var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if (reduced) { el.textContent = text; return; }
+    var i = 0;
+    function tick(){
+      if (i <= text.length){
+        el.textContent = text.slice(0, i);
+        i++;
+        setTimeout(tick, 28);
+      }
+    }
+    tick();
+  })();
+</script>
+
+</body>
+</html>
