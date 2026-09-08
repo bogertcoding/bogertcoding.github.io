@@ -415,7 +415,7 @@
         <span class="prompt">&gt;&gt;&gt;</span> <span id="typed"></span><span class="cursor"></span>
       </div>
       <h1>Joshua Chauhan</h1>
-      <p class="role">First-year Computer Science student at <a href="https://www.cs.purdue.edu/" class="hl">Purdue University</a>, still deciding whether I like recursion more than iteration. Learning by building small, sometimes-broken things.</p>
+      <p class="role">First-year Computer Science student at <span class="hl">Purdue University</span>, still deciding whether I like recursion more than iteration. Learning by building small, sometimes-broken things.</p>
     </div>
   </div>
 
@@ -564,7 +564,7 @@
         <a href="#">github.com/joshuachauhan</a>
         <a href="#">linkedin.com/in/joshuachauhan</a>
       </div>
-      <div class="hit-counter"><strong>VISITS:</strong> <span id="hit-count">…</span></div>
+      <div class="hit-counter"><strong>VISITS:</strong><span id="hit-count">…</span></div>
     </div>
   </footer>
 
@@ -589,7 +589,7 @@
   // Contact form: sends a POST request to the Flask backend's /api/contact route.
   // Replace API_BASE with your deployed backend URL once it's live (see README).
   (function(){
-    var API_BASE = "http://localhost:5000";
+    var API_BASE = "https://bogertcoding-github-io.onrender.com";
 
     var form = document.getElementById('contact-form');
     var status = document.getElementById('contact-status');
@@ -637,7 +637,7 @@
   // Hit counter: calls the backend once on page load, which increments
   // and returns the running total.
   (function(){
-    var API_BASE = "http://localhost:5000";
+    var API_BASE = "https://bogertcoding-github-io.onrender.com";
     var el = document.getElementById('hit-count');
 
     fetch(API_BASE + '/api/hits')

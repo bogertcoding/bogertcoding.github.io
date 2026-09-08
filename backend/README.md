@@ -1,70 +1,90 @@
-# Portfolio contact form backend
+# Portfolio backend — Flask + PostgreSQL (Neon) + Render
 
-A small Flask API that receives contact-form submissions from the portfolio
-site and stores them in a local SQLite database.
+A Flask API that powers two things on the portfolio site:
+- a contact form (`messages` table)
+- a page-visit counter (`hits` table)
 
-## Run it locally
+Data is stored in PostgreSQL hosted on **Neon** (free, no expiry). The app
+itself runs on **Render** (free web service tier).
+
+## 1. Create the database on Neon
+
+1. Go to neon.tech and sign up (GitHub sign-in works).
+2. Create a new project (e.g. "portfolio-db").
+3. On the project dashboard, click "Connect" and copy the **pooled
+   connection string** (hostname contains `-pooler`). It looks like:
+   ```
+   postgresql://user:password@ep-xxx-pooler.region.aws.neon.tech/neondb?sslmode=require&channel_binding=require
+   ```
+   Keep the `sslmode` and `channel_binding` parameters — Neon requires them.
+
+## 2. Run it locally
 
 ```bash
 cd backend
 python3 -m venv venv
 source venv/bin/activate
 pip install -r requirements.txt
+export DATABASE_URL="<your Neon pooled connection string>"
 python3 app.py
 ```
 
-The API will be running at `http://localhost:5000`.
+The API runs at `http://localhost:5000`. Open `index.html` with VS Code's
+Live Server extension (serves at `http://127.0.0.1:5500`) and test the
+contact form and hit counter — both write to your real Neon database, so
+what you see locally is the same data your live site will show.
 
-Open `index.html` in your browser (e.g. with VS Code's "Live Server"
-extension, which serves it at `http://127.0.0.1:5500`) and submit the
-contact form — it will POST to your local Flask server.
+## 3. Deploy the app on Render
 
-## Endpoints
+1. Push this `backend/` folder to a GitHub repo (add a `.gitignore` with
+   `venv/` in it first, so your virtual environment isn't committed).
+2. On render.com, click "New" -> "Web Service" and connect the repo.
+3. Set Root Directory to `backend` (if it's a subfolder).
+4. Build Command: `pip install -r requirements.txt`
+5. Start Command: `gunicorn app:app`
+6. Choose the Free instance type and click "Create Web Service".
+7. Once created, go to the service's Environment tab and add:
+   - Key: `DATABASE_URL`
+   - Value: the same Neon pooled connection string from step 1.
+8. Render redeploys automatically. Visit
+   `https://your-app-name.onrender.com/api/health` to confirm it's up.
 
-- `POST /api/contact` — accepts `{ "name", "email", "message" }`, stores it, returns a confirmation.
-- `GET /api/messages` — lists all received messages (for you to check submissions).
-- `GET /api/health` — simple check that the server is up.
+## 4. Connect the frontend
 
-## Deploying so it's live (not just local)
-
-GitHub Pages can only serve static files, so this Flask app needs to run
-somewhere else. Free options that work well for a small project like this:
-
-1. **Render** (render.com) — connect your GitHub repo, choose "Web Service",
-   set the start command to `gunicorn app:app`, and it builds/deploys
-   automatically on every push.
-2. **PythonAnywhere** — free tier, good for small Flask apps, slightly more
-   manual setup via their web dashboard.
-3. **Railway** — similar to Render, connect repo and deploy.
-
-Once deployed, you'll get a URL like `https://your-app.onrender.com`.
-
-Then, in `index.html`, update this line near the bottom of the file:
+In `index.html`, both places that reference `API_BASE` currently point to
+`http://localhost:5000` for local testing:
 
 ```js
 var API_BASE = "http://localhost:5000";
 ```
 
-to your live backend URL:
+Once your Render service is live, change both occurrences to:
 
 ```js
-var API_BASE = "https://your-app.onrender.com";
+var API_BASE = "https://your-app-name.onrender.com";
 ```
 
-And update the `CORS` origins list in `app.py` to include your actual
-GitHub Pages URL (e.g. `https://bogertcoding.github.io`) so the browser
-allows the request.
+Also make sure the `CORS` origins list in `app.py` includes your actual
+GitHub Pages URL (e.g. `https://bogertcoding.github.io`), then commit and
+push - Render redeploys automatically on every push.
+
+## Endpoints
+
+- `POST /api/contact` - accepts `{ "name", "email", "message" }`, stores it, returns a confirmation.
+- `GET /api/messages` - lists all received contact messages.
+- `GET /api/hits` - increments the visit counter and returns the new total.
+- `GET /api/health` - simple check that the server is up.
 
 ## Important notes
 
-- **SQLite file storage**: most free hosts (like Render's free tier) use
-  ephemeral disks, meaning your `contacts.db` file may reset when the app
-  restarts. Fine for learning; for something permanent, you'd move to a
-  hosted database like a free PostgreSQL instance (Render and Railway both
-  offer one).
-- **Protect `/api/messages`**: right now anyone who knows the URL can view
-  submitted messages. For a real deployment, add a simple check (like an
-  API key in a header) before exposing this endpoint publicly, or remove
-  it and just check the database directly.
-- **Environment variables**: don't commit secrets (API keys, email
-  credentials) directly into `app.py`. Use environment variables instead.
+- **Protect `/api/messages`**: anyone who knows the URL can currently view
+  submitted messages. For real use, add an API-key check on this route
+  before making the site public.
+- **Never commit `DATABASE_URL`** or any credentials into `app.py` or git -
+  always set it as an environment variable, both locally and on Render.
+- **Render free tier cold starts**: after 15 minutes of inactivity, the
+  first request can take 30-60 seconds while the service wakes up. Normal
+  behavior on the free tier, not a bug.
+- **`/api/hits` counts page loads, not unique visitors** - refreshing the
+  page increases the count each time. Deduplicating by visitor would
+  require tracking sessions or cookies, which this simple version doesn't do.
